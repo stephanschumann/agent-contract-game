@@ -9,31 +9,65 @@
 
 ## 📋 ToDo
 
-### FEATURE-009 Die 21 Szenarien themenbezogen gruppieren
+### BUG-002 „Team debrief"/„facilitator" widerspricht der Einzelspieler-Rahmung im Agent-Modus
 
-*(Hinweis 2026-07-23: ursprünglich unter der Nummer FEATURE-008 angelegt. Diese Nummer gehörte eigentlich schon dem Team-Modus-Vertical-Slice — der aber nie als Ticket in diese Datei geschrieben wurde und deshalb bei der Anlage dieses Tickets frei aussah. Beim nachträglichen sauberen Dokumentieren des Team-Modus als FEATURE-008 wurde dieses Ticket auf FEATURE-009 hochgezählt, damit beide Nummern eindeutig bleiben.)*
+| Feld | Wert |
+|------|------|
+| **Typ** | BugFix |
+| **Priorität** | Mittel |
+| **Status** | ToDo |
+| **Erstellt** | 2026-07-23 |
+
+**Beschreibung:** Laut Ersteindruck-Testlauf (23.07.2026) sprechen die wiederkehrenden Debrief-Kästen nach fast jedem Schritt ("Team debrief — pause and talk" / "💬 Talk as a team: …") und der Satz "The facilitator picks one …" auf dem Szenario-Auswahlbildschirm durchgehend eine Gruppe an, obwohl der Agent-Modus als Einzelspiel gedacht ist. Am echten Code verifiziert: Die gemeinsam von Agent- und Team-Modus genutzte Funktion `debriefHTML()` (public/index.html) hat den Team-Wortlaut fest einprogrammiert, unabhängig vom Modus; ebenso ist der Satz mit "facilitator" fest im Szenario-Auswahltext verankert.
+
+**User Story:** Als Spielerin/Spieler im Einzelspiel-Modus ("Collaborate with Agents") möchte ich durchgehend als Einzelperson angesprochen werden, sodass ich nicht denke, etwas verpasst zu haben oder eigentlich in einer Gruppensitzung sein zu müssen.
+
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 1 + 5).
+
+### BUG-003 Deutsche Anführungszeichen statt englische in Spieltexten
+
+| Feld | Wert |
+|------|------|
+| **Typ** | BugFix |
+| **Priorität** | Niedrig |
+| **Status** | ToDo |
+| **Erstellt** | 2026-07-23 |
+
+**Beschreibung:** Laut Ersteindruck-Testlauf tauchen im durchgehend englischsprachigen Spiel wiederholt deutsche Anführungszeichen ("…") statt englischer ("…"/'…') auf. Am echten Code verifiziert: 183 Fundstellen von „ bzw. “ in `public/index.html`.
+
+**User Story:** Als Spielerin/Spieler möchte ich durchgängig korrekte englische Anführungszeichen sehen, sodass der sonst sehr polierte Eindruck der App nicht getrübt wird.
+
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 2).
+
+### BUG-004 Layout-Sprung beim Aufklappen der zweiten „What's different here?"-Infobox auf der Startseite
+
+| Feld | Wert |
+|------|------|
+| **Typ** | BugFix |
+| **Priorität** | Niedrig |
+| **Status** | ToDo |
+| **Erstellt** | 2026-07-23 |
+
+**Beschreibung:** Laut Ersteindruck-Testlauf lief ein erster Klick auf "What's different here?" bei der zweiten Modus-Karte (Team-Modus) ins Leere, weil sich durch das Aufklappen der ersten Karte das Layout kurz vorher verschoben hatte. Am echten Code verifiziert: Beide Infoboxen sind native `<details><summary>What's different here?</summary>…</details>`-Elemente; das native Aufklappverhalten verschiebt den nachfolgenden Inhalt sofort ohne Übergang — ein Klick, der auf die alte Position der zweiten Box zielt, trifft daher ins Leere.
+
+**User Story:** Als Spielerin/Spieler möchte ich beide Modus-Infoboxen zuverlässig mit einem einzigen Klick aufklappen können, auch direkt nacheinander, sodass ich nicht zweimal klicken muss.
+
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 4).
+
+### FEATURE-013 Kurze Erklärungen für Fachbegriffe ergänzen (Given/When/Then, Definition of Ready, Pre-mortem)
 
 | Feld | Wert |
 |------|------|
 | **Typ** | Feature |
-| **Priorität** | Mittel |
+| **Priorität** | Niedrig |
 | **Status** | ToDo |
-| **Erstellt** | 2026-07-22 |
+| **Erstellt** | 2026-07-23 |
 
-**Beschreibung:** Stephan möchte, dass Spielende auf dem Startbildschirm schneller ein für sie passendes Szenario finden, statt sich durch 21 gleichrangige Karten zu klicken oder auf „Surprise us" auszuweichen. Vorschlag, abgeleitet aus den tatsächlichen Titeln/Kurztexten aller 21 Szenarien (`public/index.html`, `SCENARIOS`-Liste), sechs Themengruppen:
+**Beschreibung:** Laut Ersteindruck-Testlauf werden Fachbegriffe wie "Given/When/Then", "Definition of Ready" und "pre-mortem" im Spiel verwendet und im Kontext angedeutet, aber nirgends in einem kurzen Satz ausdrücklich definiert — für komplette Neulinge ohne Vorwissen eine Hürde. Am echten Code verifiziert: "Given/When/Then" taucht 3×, "Definition of Ready" 14× und nutzerseitig sichtbares "pre-mortem" 6× auf, jeweils ohne eigene Ein-Satz-Erklärung beim ersten Auftreten.
 
-1. **Geld rausschicken** (6): Bulk supplier payments, Run payroll, Pay a supplier abroad, Schedule a future tax payment, Send a one-off payment, Move spare cash automatically
-2. **Geld reinholen** (3): Collect from many customers, Request money from a customer, Decline a payment request
-3. **Firmenkarten** (3): Company cards with limits, Single-use virtual card, Freeze a lost company card
-4. **Freigaben & Limits** (4): Second approver for large payments, Daily payment cap for the company, Add and approve a new payee, Check the payee's details
-5. **Zugriff & Sicherheit** (3): Give the right access, Log in to the company portal, Report a transaction we don't recognise
-6. **Überblick behalten** (2): One live view of all balances, Alerts on account movement
+**User Story:** Als Spielerin/Spieler ohne Vorwissen möchte ich beim ersten Auftreten eines Fachbegriffs eine kurze Erklärung in Klammern sehen, sodass ich der Spielhandlung folgen kann, ohne den Begriff selbst nachschlagen zu müssen.
 
-Summe 6+3+3+4+3+2 = 21, jedes Szenario genau einer Gruppe zugeordnet, keins doppelt oder vergessen.
-
-**Offene Punkte für die Analysephase (bewusst noch nicht entschieden):** Wie die Gruppen auf dem Startbildschirm erscheinen (z. B. Themen-Reiter/Filter-Chips oberhalb der Karten vs. sechs beschriftete Abschnitte untereinander); ob „Surprise us" weiterhin über alle 21 zieht oder optional auf eine gewählte Gruppe eingeschränkt werden kann; endgültige deutsche oder englische Beschriftung der sechs Gruppennamen (Spiel ist aktuell komplett englischsprachig, Vorschlag oben zur besseren Lesbarkeit für Stephan auf Deutsch benannt).
-
-**Bezug:** Chat-Idee 2026-07-22.
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 3).
 
 ## ✅ Done
 ### FEATURE-012 Die übrigen 20 Bank-Themen auch im Team-Modus spielbar machen
