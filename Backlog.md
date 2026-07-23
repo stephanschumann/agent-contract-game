@@ -6,14 +6,63 @@
 
 ## 🔄 In Progress
 
+## 📋 ToDo
+
+### BUG-002 „Team debrief"/„facilitator" widerspricht der Einzelspieler-Rahmung im Agent-Modus
+
+| Feld | Wert |
+|------|------|
+| **Typ** | BugFix |
+| **Priorität** | Mittel |
+| **Status** | ToDo |
+| **Erstellt** | 2026-07-23 |
+
+**Beschreibung:** Laut Ersteindruck-Testlauf (23.07.2026) sprechen die wiederkehrenden Debrief-Kästen nach fast jedem Schritt ("Team debrief — pause and talk" / "💬 Talk as a team: …") und der Satz "The facilitator picks one …" auf dem Szenario-Auswahlbildschirm durchgehend eine Gruppe an, obwohl der Agent-Modus als Einzelspiel gedacht ist. Am echten Code verifiziert: Die gemeinsam von Agent- und Team-Modus genutzte Funktion `debriefHTML()` (public/index.html) hat den Team-Wortlaut fest einprogrammiert, unabhängig vom Modus; ebenso ist der Satz mit "facilitator" fest im Szenario-Auswahltext verankert.
+
+**User Story:** Als Spielerin/Spieler im Einzelspiel-Modus ("Collaborate with Agents") möchte ich durchgehend als Einzelperson angesprochen werden, sodass ich nicht denke, etwas verpasst zu haben oder eigentlich in einer Gruppensitzung sein zu müssen.
+
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 1 + 5).
+
+### BUG-003 Deutsche Anführungszeichen statt englische in Spieltexten
+
+| Feld | Wert |
+|------|------|
+| **Typ** | BugFix |
+| **Priorität** | Niedrig |
+| **Status** | ToDo |
+| **Erstellt** | 2026-07-23 |
+
+**Beschreibung:** Laut Ersteindruck-Testlauf tauchen im durchgehend englischsprachigen Spiel wiederholt deutsche Anführungszeichen ("…") statt englischer ("…"/'…') auf. Am echten Code verifiziert: 183 Fundstellen von „ bzw. “ in `public/index.html`.
+
+**User Story:** Als Spielerin/Spieler möchte ich durchgängig korrekte englische Anführungszeichen sehen, sodass der sonst sehr polierte Eindruck der App nicht getrübt wird.
+
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 2).
+
+### BUG-004 Layout-Sprung beim Aufklappen der zweiten „What's different here?"-Infobox auf der Startseite
+
+| Feld | Wert |
+|------|------|
+| **Typ** | BugFix |
+| **Priorität** | Niedrig |
+| **Status** | ToDo |
+| **Erstellt** | 2026-07-23 |
+
+**Beschreibung:** Laut Ersteindruck-Testlauf lief ein erster Klick auf "What's different here?" bei der zweiten Modus-Karte (Team-Modus) ins Leere, weil sich durch das Aufklappen der ersten Karte das Layout kurz vorher verschoben hatte. Am echten Code verifiziert: Beide Infoboxen sind native `<details><summary>What's different here?</summary>…</details>`-Elemente; das native Aufklappverhalten verschiebt den nachfolgenden Inhalt sofort ohne Übergang — ein Klick, der auf die alte Position der zweiten Box zielt, trifft daher ins Leere.
+
+**User Story:** Als Spielerin/Spieler möchte ich beide Modus-Infoboxen zuverlässig mit einem einzigen Klick aufklappen können, auch direkt nacheinander, sodass ich nicht zweimal klicken muss.
+
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 4).
+
+## ✅ Done
 ### FEATURE-013 Kurze Erklärungen für Fachbegriffe ergänzen (Given/When/Then, Definition of Ready, Pre-mortem)
 
 | Feld | Wert |
 |------|------|
 | **Typ** | Feature |
 | **Priorität** | Niedrig |
-| **Status** | In Progress |
+| **Status** | Done |
 | **Erstellt** | 2026-07-23 |
+| **Done seit** | 2026-07-23 |
 
 **Beschreibung:** Laut Ersteindruck-Testlauf werden Fachbegriffe wie "Given/When/Then", "Definition of Ready" und "pre-mortem" im Spiel verwendet und im Kontext angedeutet, aber nirgends in einem kurzen Satz ausdrücklich definiert — für komplette Neulinge ohne Vorwissen eine Hürde. Am echten Code verifiziert: "Given/When/Then" taucht 3×, "Definition of Ready" 14× und nutzerseitig sichtbares "pre-mortem" 6× auf, jeweils ohne eigene Ein-Satz-Erklärung beim ersten Auftreten.
 
@@ -77,56 +126,10 @@ Ausgeschlossen: die beiden aufklappbaren „What's different here?"-Infoboxen au
 **Implementierungsnotizen:**
 Umgesetzt in `public/index.html` (Basis: HEAD `8513672`, `GAME_VERSION` „1.19.0", vor Beginn per `git log`/`git status` geprüft — sauberer Stand). An den 6 in der Analyse identifizierten Stellen wurde der jeweils bestehende String um eine Klammer-Erklärung ergänzt, ohne ein Zeichen des Originaltexts zu verändern: Agenten-„build"-Stage (`debrief.take`), Agenten-„select premortem"-Stage (`debrief.take`), Agenten-Boss-Stage (`setup`), Team-„teamgherkin"-Stage (`debrief.take`), Team-„teamselect premortem"-Stage (`debrief.take`), Team-„teamdor"-Stage (`title`). Alle drei Erklärungstexte durchgängig mit dem im restlichen Spiel vorherrschenden typografischen Apostroph (’) geschrieben, keine deutschen Anführungszeichen verwendet (Abgrenzung zu BUG-003). `GAME_VERSION` „1.19.0" → „1.20.0". Neue dauerhafte Testdatei `tests/FEATURE-013.test.js`. Diese Sitzung lief als Cloud-Sandbox ohne Zugriff auf Stephans echtes Repo/Mac (nur ein anonymer, push-rechtloser Lese-Klon von GitHub) — `public/index.html`, `tests/FEATURE-013.test.js` und die aktualisierte `Backlog.md` werden Stephan direkt als Dateien zugestellt, damit er sie selbst in sein Repo übernehmen kann.
 
+**Release:** Als v1.20.0 released (Commit `d1000c5`, gemergt aus `feature-013`). GitHub Action „Deploy to Firebase Hosting on merge" (Run 18) grün. Live-Verifikation per eigenständigem Chrome-Browser-Subagenten: `agent-contract-game.web.app` und `learning.stephanschumann.com` zeigen beide „v1.20.0"; alle drei Erklärungen (Given/When/Then, Pre-mortem, Definition of Ready) in Agent- und Team-Modus per echtem Browser-JS gegen die reale Render-Funktion (`debriefHTML()`/`stageHead()`) bestätigt; keine Konsolenfehler aus dem Spiel selbst. Stephan hat das Ticket auf Done gesetzt; der einzige im Testplan offen gebliebene Punkt (Handy-Breite/Zeilenumbruch der Klammer-Erklärungen) wurde dabei nicht gesondert rückgemeldet — nicht als „geprüft" zu verstehen, nur als von Stephan nicht mehr blockierend eingestuft.
+
 **Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 3).
 
-## 📋 ToDo
-
-### BUG-002 „Team debrief"/„facilitator" widerspricht der Einzelspieler-Rahmung im Agent-Modus
-
-| Feld | Wert |
-|------|------|
-| **Typ** | BugFix |
-| **Priorität** | Mittel |
-| **Status** | ToDo |
-| **Erstellt** | 2026-07-23 |
-
-**Beschreibung:** Laut Ersteindruck-Testlauf (23.07.2026) sprechen die wiederkehrenden Debrief-Kästen nach fast jedem Schritt ("Team debrief — pause and talk" / "💬 Talk as a team: …") und der Satz "The facilitator picks one …" auf dem Szenario-Auswahlbildschirm durchgehend eine Gruppe an, obwohl der Agent-Modus als Einzelspiel gedacht ist. Am echten Code verifiziert: Die gemeinsam von Agent- und Team-Modus genutzte Funktion `debriefHTML()` (public/index.html) hat den Team-Wortlaut fest einprogrammiert, unabhängig vom Modus; ebenso ist der Satz mit "facilitator" fest im Szenario-Auswahltext verankert.
-
-**User Story:** Als Spielerin/Spieler im Einzelspiel-Modus ("Collaborate with Agents") möchte ich durchgehend als Einzelperson angesprochen werden, sodass ich nicht denke, etwas verpasst zu haben oder eigentlich in einer Gruppensitzung sein zu müssen.
-
-**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 1 + 5).
-
-### BUG-003 Deutsche Anführungszeichen statt englische in Spieltexten
-
-| Feld | Wert |
-|------|------|
-| **Typ** | BugFix |
-| **Priorität** | Niedrig |
-| **Status** | ToDo |
-| **Erstellt** | 2026-07-23 |
-
-**Beschreibung:** Laut Ersteindruck-Testlauf tauchen im durchgehend englischsprachigen Spiel wiederholt deutsche Anführungszeichen ("…") statt englischer ("…"/'…') auf. Am echten Code verifiziert: 183 Fundstellen von „ bzw. “ in `public/index.html`.
-
-**User Story:** Als Spielerin/Spieler möchte ich durchgängig korrekte englische Anführungszeichen sehen, sodass der sonst sehr polierte Eindruck der App nicht getrübt wird.
-
-**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 2).
-
-### BUG-004 Layout-Sprung beim Aufklappen der zweiten „What's different here?"-Infobox auf der Startseite
-
-| Feld | Wert |
-|------|------|
-| **Typ** | BugFix |
-| **Priorität** | Niedrig |
-| **Status** | ToDo |
-| **Erstellt** | 2026-07-23 |
-
-**Beschreibung:** Laut Ersteindruck-Testlauf lief ein erster Klick auf "What's different here?" bei der zweiten Modus-Karte (Team-Modus) ins Leere, weil sich durch das Aufklappen der ersten Karte das Layout kurz vorher verschoben hatte. Am echten Code verifiziert: Beide Infoboxen sind native `<details><summary>What's different here?</summary>…</details>`-Elemente; das native Aufklappverhalten verschiebt den nachfolgenden Inhalt sofort ohne Übergang — ein Klick, der auf die alte Position der zweiten Box zielt, trifft daher ins Leere.
-
-**User Story:** Als Spielerin/Spieler möchte ich beide Modus-Infoboxen zuverlässig mit einem einzigen Klick aufklappen können, auch direkt nacheinander, sodass ich nicht zweimal klicken muss.
-
-**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 4).
-
-## ✅ Done
 ### FEATURE-012 Die übrigen 20 Bank-Themen auch im Team-Modus spielbar machen
 
 | Feld | Wert |
