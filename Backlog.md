@@ -6,22 +6,78 @@
 
 ## 🔄 In Progress
 
-## 📋 ToDo
-
 ### BUG-002 „Team debrief"/„facilitator" widerspricht der Einzelspieler-Rahmung im Agent-Modus
 
 | Feld | Wert |
 |------|------|
 | **Typ** | BugFix |
 | **Priorität** | Mittel |
-| **Status** | ToDo |
+| **Status** | In Progress |
 | **Erstellt** | 2026-07-23 |
+| **In Progress seit** | 2026-07-24 |
 
 **Beschreibung:** Laut Ersteindruck-Testlauf (23.07.2026) sprechen die wiederkehrenden Debrief-Kästen nach fast jedem Schritt ("Team debrief — pause and talk" / "💬 Talk as a team: …") und der Satz "The facilitator picks one …" auf dem Szenario-Auswahlbildschirm durchgehend eine Gruppe an, obwohl der Agent-Modus als Einzelspiel gedacht ist. Am echten Code verifiziert: Die gemeinsam von Agent- und Team-Modus genutzte Funktion `debriefHTML()` (public/index.html) hat den Team-Wortlaut fest einprogrammiert, unabhängig vom Modus; ebenso ist der Satz mit "facilitator" fest im Szenario-Auswahltext verankert.
 
 **User Story:** Als Spielerin/Spieler im Einzelspiel-Modus ("Collaborate with Agents") möchte ich durchgehend als Einzelperson angesprochen werden, sodass ich nicht denke, etwas verpasst zu haben oder eigentlich in einer Gruppensitzung sein zu müssen.
 
-**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 1 + 5).
+**Hinweis zur Scope-Erweiterung (Stephan, 2026-07-24):** Die Einzelansprache soll für die direkte Ansage an die spielende Person in beiden Modi (Agent- und Team-Modus) gelten, nicht nur im Agent-Modus. Der bestehende „For facilitators"-Baustein bleibt ausdrücklich erhalten und wird inhaltlich erweitert (welche agilen Methoden der jeweilige Modus simuliert) sowie zusätzlich im Team-Modus ergänzt, damit Coaches/Trainer:innen beide Modi als Gruppensitzung anleiten können. Damit wächst dieses Ticket über eine reine Fehlerbehebung hinaus (es entsteht neuer, redaktioneller Inhalt) — bewusst als ein Ticket belassen, siehe Notiz in der Analyse.
+
+**Scope:**
+Eingeschlossen: Alle direkten Ansage-Texte an die spielende Person — der Begrüßungsbildschirm ganz am Anfang, die Überschrift auf dem Modus-Auswahlbildschirm, die wiederkehrende Diskussions-Box nach jedem Spielschritt, der Satz zur Szenario-Auswahl sowie die Abschlussfrage am Ende einer Agent-Modus-Runde — werden in beiden Modi (Agent- und Team-Modus) konsistent an eine einzelne Person gerichtet. Der bestehende „For facilitators"-Button samt Infofeld im Agent-Modus bleibt erhalten und wird um Informationen zu den simulierten agilen Methoden ergänzt; ein gleichwertiger Facilitator-Button samt eigenem, zum Team-Modus passendem Infofeld wird neu auf dem Team-Modus-Auswahlbildschirm ergänzt.
+Ausgeschlossen: alle Inhalte der 21 Bankszenarien selbst (Kartentexte, Übungsoptionen — dort kommt „team"/„everyone" nur als gewöhnliche Fachsprache über die simulierte Software vor, nicht als Ansage an die spielende Person); die Einführungs-/Stimmungstexte der beiden Modus-Karten auf dem Auswahlbildschirm (beschreiben die jeweilige Spielprämisse, keine Gruppen-Ansage); die Einstiegs-Erzähltexte des Agent-Modus sowie sämtliche Rollen- und Reflexionsinhalte des Team-Modus (Rollen-Aufstellung, Diskussionsfragen zum eigenen Team) — das ist die eigentliche Spielgeschichte bzw. eine inhaltlich sinnvolle Reflexionsfrage zum eigenen Team und bleibt laut Stephans Entscheidung unverändert; BUG-003 und BUG-004 (eigene Tickets).
+
+**Akzeptanzkriterien:**
+- [ ] Der Begrüßungsbildschirm und die Überschrift auf dem Modus-Auswahlbildschirm sprechen dich als Einzelperson an, unabhängig davon, welchen Modus du danach wählst.
+- [ ] Nach jedem Spielschritt spricht die Diskussions-Box dich als Einzelperson an — identisch im Agent- und im Team-Modus (kein Unterschied mehr zwischen den Modi nötig).
+- [ ] Der Satz zur Szenario-Auswahl spricht dich als Einzelperson an — sowohl im Agent- als auch im Team-Modus.
+- [ ] Die Abschlussfrage am Ende einer Agent-Modus-Runde spricht dich als Einzelperson an.
+- [ ] Der „For facilitators"-Button mit Infofeld ist weiterhin im Agent-Modus vorhanden und erklärt zusätzlich, welche agilen Methoden dieser Modus simuliert (Definition of Ready, Given/When/Then, Pre-Mortem, Analyse- vs. Cycle-Zeit).
+- [ ] Ein gleichwertiger Facilitator-Button mit eigenem, zum Team-Modus passendem Infofeld ist neu auf dem Team-Modus-Auswahlbildschirm vorhanden (zeitlich begrenztes Refinement, ein oft fehlender Product Owner, eine Definition of Ready, die nur zählt, wenn sie wirklich stimmt, später auftauchende offene Fragen).
+- [ ] Im Team-Modus zeigen die Rollen-Aufstellung und alle inhaltlichen Reflexionsfragen weiterhin unverändert Team-Bezug — nur die direkte Ansage wurde umgestellt, nicht die Spielgeschichte selbst.
+- [ ] Die Versionsnummer im Fußbereich der Seite wurde erhöht.
+
+**Fundstellen-Sweep:** Gesucht nach „the team", „your team", „everyone", „the whole team", „as a team", „the room" und „facilitator" im gesamten `public/index.html` (nicht aus der Ticket-Beschreibung übernommen, sondern selbst nachgezählt, ca. 75 Treffer gesamt):
+- Direkte Ansage an die spielende Person (Ebene 2, in Scope): Begrüßungs-Overlay `ovIntro` ("your team just got a two-line ticket, and everyone's itching to start", "choose how your team works today") — 1 Fundstelle vor jeder Moduswahl; Überschrift auf `renderModePicker()` ("Choose how your team works today") — 1 Fundstelle; `debriefHTML()`-Wrapper ("Team debrief — pause and talk" / "Talk as a team:") — von beiden Modi gemeinsam genutzt, 1 Fundstelle; Szenario-Auswahlsatz im Agent-Modus ("The facilitator picks one …") — 1 Fundstelle; Szenario-Auswahlsatz im Team-Modus ("Pick what your team refines today" / "Choose one for your team …") — 2 Fundstellen; Abschlussfrage im Agent-Modus-Finale ("Last team question: Where does your team most often start …") — 1 Fundstelle, hat im Team-Modus-Finale keine Entsprechung (dort existiert keine vergleichbare Frage-Box).
+- Facilitator-Baustein (bleibt erhalten, wird erweitert): Button „For facilitators" + Infofeld „How to run this session" im Agent-Modus (`facBtn`/`facil`) — 1 Fundstelle, aktuell nur im Agent-Modus vorhanden, wird um agile-Methoden-Infos ergänzt; im Team-Modus existiert dieser Baustein noch nicht und wird neu ergänzt.
+- Ausdrücklich ausgeschlossen (Ebene 1, Spielgeschichte/Fachtext, ca. 70 der ~75 Treffer): rund 50 Erwähnungen von „everyone"/„the team" innerhalb der 21 Bankszenarien selbst (z. B. „pay everyone's salary", „the team agrees the acceptable delay") — gewöhnliche Fachsprache über die simulierte Banking-Software, kein Bezug zur spielenden Person; die Einführungstexte der beiden Modus-Karten auf dem Auswahlbildschirm ("agentic software development just joined the team", "the whole team is racing toward a deadline", "the work is done entirely by the team itself") — Stimmungstext zur jeweiligen Spielprämisse; die Szenen-Texte des Agent-Modus ("Your team has picked up this change …", "the whole team feels the pull to just get going") sowie sämtliche Rollen-/Diskussionsinhalte des Team-Modus (Rollen-Aufstellung „wer ist im Raum", alle Reflexionsfragen mit Bezug auf „your team") — das ist die eigentliche Spielgeschichte bzw. eine inhaltlich sinnvolle Reflexionsfrage zum eigenen Team, laut Stephans Entscheidung vom 24.07.2026 unverändert; die Abschluss-Erzählung im Team-Modus-Finale ("Your team shipped the change …") — beschreibt das fiktive Spielergebnis, keine Ansage an die spielende Person.
+
+**Zustands-Check:** Wartezustand: entfällt — reiner statischer Text, kein Laden, kein Netzwerkzugriff. Leerzustand: entfällt — alle betroffenen Textstellen sind in jedem Spieldurchlauf und bei jedem der 21 Szenarien gleichermaßen vorhanden. Fehlerfall: entfällt — rein clientseitige, statische Textänderung plus zwei neue, aber unkomplizierte Auf-/Zuklapp-Buttons (kein Netzwerkzugriff, kein neues Fehlerverhalten nötig oder vorgesehen).
+
+**Pre-Mortem:**
+- 💀 Eine der mehreren betroffenen Ansage-Stellen wird beim Umschreiben übersehen (z. B. nur die Diskussions-Box angepasst, die Abschlussfrage oder der Begrüßungsbildschirm vergessen) → Gegenmaßnahme: Testplan prüft jede der im Fundstellen-Sweep gelisteten Ansage-Stellen einzeln, nicht nur stichprobenartig.
+- 💀 Der neue Facilitator-Button im Team-Modus wird per Copy-Paste eingebaut und stört dabei versehentlich die bestehende Szenario-Auswahl (z. B. überschneidende Element-IDs oder Klick-Handler) → Gegenmaßnahme: eigener Test, der den neuen Button klickt und danach bestätigt, dass Szenario-Auswahl und Rundenstart im Team-Modus weiterhin normal funktionieren.
+- 💀 Die neuen bzw. erweiterten Facilitator-Inhalte werden für beide Modi identisch/generisch formuliert, obwohl sie unterschiedliche agile Methoden erklären sollen → Gegenmaßnahme: eigenes Akzeptanzkriterium, das inhaltlich unterschiedliche, modusspezifische Inhalte verlangt, vor Abschluss von Stephan im Browser gegengelesen.
+- 💀 Die Abgrenzung „nur die Ansage ändert sich, die Spielgeschichte bleibt" wird bei der Umsetzung nicht konsequent durchgehalten und es rutschen versehentlich auch Spielgeschichte-Textstellen mit rein (z. B. die Team-Modus-Rollen-Aufstellung) → Gegenmaßnahme: die Ausschluss-Liste im Fundstellen-Sweep bleibt als verbindliche Referenz im Ticket stehen; eigenes Akzeptanzkriterium bestätigt, dass die Spielgeschichte im Team-Modus unverändert Team-Bezug zeigt.
+- 💀 Die Versionsnummer wird trotz mehrerer sichtbarer Textänderungen und zwei neuer UI-Elemente vergessen zu erhöhen → Gegenmaßnahme: eigenes Akzeptanzkriterium und eigener Test dafür, wie bei jedem bisherigen Ticket.
+- 💀 Beim Vereinheitlichen von `debriefHTML()` auf einen einzigen, modusunabhängigen Wortlaut bleibt eine alte Fallunterscheidung im Code stehen, die künftig nie mehr greift, aber Verwirrung stiftet → Gegenmaßnahme: in der Umsetzung explizit prüfen, ob überhaupt eine Fallunterscheidung nach Modus nötig bleibt, und wenn nicht, sie entfernen statt toten Code zurückzulassen.
+
+**Optionenvergleich:**
+
+✅ **Entscheidung 1 (Stephan, 2026-07-24):** Die Einzelansprache betrifft ausschließlich die direkte Ansage an die spielende Person (Ebene 2 — Begrüßung, Diskussions-Box, Szenario-Auswahlsatz, Abschlussfrage), nicht die eigentliche Spielgeschichte des Team-Modus (Ebene 1 — Rollen-Aufstellung, Reflexionsfragen zum eigenen Team). Grund: Ebene 1 ist der eigentliche Inhalt des Team-Modus und wurde im Ersteindruck-Test nicht als verwirrend gemeldet; eine Änderung dort würde das Konzept des Modus selbst verändern, ohne das gemeldete Problem zu lösen.
+
+✅ **Entscheidung 2 (Stephan, 2026-07-24):** Der Facilitator-Button samt Infofeld bleibt erhalten und wird auf beide Modus-Auswahlbildschirme ausgeweitet (bisher nur Agent-Modus), mit modusspezifischem Inhalt zu den jeweils simulierten agilen Methoden. Grund: Coaches/Trainer:innen sollen weiterhin beide Modi als Gruppensitzung anleiten können — die Einzelansprache im Spieltext selbst und ein separates Anleitungs-Infofeld für Facilitator:innen widersprechen sich nicht, sie sind unterschiedliche Ebenen.
+
+**Analyse & Planung:**
+- [ ] Begrüßungs-Overlay (`ovIntro`): Einzelansprache statt „your team"/„everyone".
+- [ ] Überschrift auf `renderModePicker()`: Einzelansprache statt „Choose how your team works today".
+- [ ] `debriefHTML()`: einheitlicher, einzelpersonen-adressierter Wortlaut für beide Modi; dabei prüfen, ob eine bestehende Modus-Fallunterscheidung dadurch überflüssig wird und entfernt werden kann.
+- [ ] Agent-Modus-Szenarioauswahl (`renderPicker()`): Einzelansprache statt „The facilitator picks one …"; Facilitator-Button/Infofeld bleibt, Inhalt um simulierte agile Methoden des Agent-Modus ergänzt.
+- [ ] Team-Modus-Szenarioauswahl (`renderTeamPicker()`): Einzelansprache statt „Pick what your team refines today"/„Choose one for your team …"; neuer Facilitator-Button samt eigenem Infofeld zu den im Team-Modus simulierten agilen Methoden, analog zum Agent-Modus umgesetzt (eigene Element-IDs, keine Kollision mit den bestehenden Agent-Modus-IDs).
+- [ ] Agent-Modus-Finale (`renderFinale()`): Einzelansprache statt „Last team question: Where does your team most often start …".
+- [ ] `GAME_VERSION` erhöhen (aktuell „1.20.0").
+
+**Testplan:**
+- [ ] Automatisierter Test klickt sich wie eine echte Person durch beide Modi (Begrüßung → Modus wählen → Szenario wählen → erste Diskussions-Box) und prüft in beiden, dass die Einzelperson-Ansprache korrekt erscheint und keine der im Fundstellen-Sweep gelisteten Gruppen-Ansagen mehr auftaucht.
+- [ ] Test klickt den neuen Facilitator-Button im Team-Modus, prüft dass sich das Infofeld öffnet/schließt und die Szenario-Auswahl (Zufallsknopf, Startknopf) danach weiterhin normal funktioniert.
+- [ ] Test bestätigt, dass die Rollen-Aufstellung und mindestens eine Reflexionsfrage im Team-Modus weiterhin unverändert Team-Bezug zeigen (Regressionsschutz gegen versehentliches Mit-Umschreiben von Ebene-1-Text).
+- [ ] Reiner Syntax-Check (`node --check`) des extrahierten Skripts.
+- [ ] Pflicht-Regressionslauf gegen alle bestehenden dauerhaften Testdateien (aktuell 14 Dateien).
+- [ ] Test bestätigt die erhöhte `GAME_VERSION`.
+- [ ] Offener Punkt bleibt: ein kurzer eigener Blick von Stephan im Browser nach dem Release, insbesondere auf die Formulierung der beiden Facilitator-Infofelder (agile Methoden pro Modus) — das ist eine redaktionelle Einschätzung, die jsdom nicht treffen kann.
+
+**Bezug:** Ersteindruck-Testlauf 23.07.2026 (Finding 1 + 5); Scope am 24.07.2026 gemeinsam mit Stephan erweitert (Einzelansprache in beiden Modi, Facilitator-Baustein bleibt und wird ausgeweitet).
+
+## 📋 ToDo
 
 ### BUG-003 Deutsche Anführungszeichen statt englische in Spieltexten
 
